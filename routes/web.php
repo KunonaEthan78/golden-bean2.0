@@ -120,6 +120,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 Route::get('/admin/export-orders', [ExportController::class, 'exportOrderData'])->name('admin.export.orders');
 
 
+    Route::get('/admin/analytics', [AdminDashboardController::class, 'analytics'])->name('admin.analytics');
+
+
 // ✅ CUSTOMER ROUTES
 Route::middleware(['auth'])->prefix('customer')->name('customer.')->group(function () {
     Route::get('/', fn() => view('customer.customer'))->name('dashboard');

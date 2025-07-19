@@ -94,6 +94,11 @@
         📥 Download All Orders CSV
     </a>
 </div>
+<div class="mb-3">
+    <a href="{{ route('admin.analytics') }}" class="btn btn-outline-info">
+        📊 View Full Analytics Dashboard
+    </a>
+</div>
 @endsection
 
 @section('scripts')

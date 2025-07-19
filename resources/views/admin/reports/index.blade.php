@@ -4,6 +4,11 @@
 @section('content')
 <div class="container py-4">
     <h2 class="text-center text-primary mb-4">📊 Order Reports & Analytics</h2>
+    <div class="mb-3 text-start">
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-dark">
+        ← Back to Dashboard
+    </a>
+</div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
