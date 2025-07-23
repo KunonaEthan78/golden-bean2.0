@@ -8,7 +8,7 @@ use App\Http\Response\LoginResponse;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Support\ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
      * The path to the "home" route for your application.
@@ -23,7 +23,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        parent::boot();
+       
     }
 
     
