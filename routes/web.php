@@ -33,6 +33,8 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 
 use App\Models\WholesalerProduct;
 
+use App\Http\Controllers\VendorApplicationController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -170,6 +172,12 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
     Route::patch('/', [ProfileController::class, 'update'])->name('update');
     Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+});
+
+// ✅ VENDOR APPLICATION ROUTES
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendor-application', [VendorApplicationController::class, 'showForm'])->name('vendor.application');
+    Route::post('/vendor-application', [VendorApplicationController::class, 'submit']);
 });
 
 require __DIR__.'/auth.php';
