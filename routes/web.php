@@ -33,6 +33,8 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 
 use App\Models\WholesalerProduct;
 
+use App\Livewire\Chat;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -171,5 +173,10 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
     Route::patch('/', [ProfileController::class, 'update'])->name('update');
     Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
 });
+
+
+// ✅ LIVEWIRE CHAT
+Route::middleware(['auth'])->get('/chat', Chat::class)->name('chat');
+
 
 require __DIR__.'/auth.php';
