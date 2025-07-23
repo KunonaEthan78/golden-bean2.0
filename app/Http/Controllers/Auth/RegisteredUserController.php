@@ -47,6 +47,11 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        // Redirect wholesalers and retailers to vendor application page
+        if (in_array($user->role, ['wholesaler', 'retailer'])) {
+            return redirect()->route('vendor.application');
+        }
+
         return redirect()->intended('/dashboard');
     }
 }

@@ -38,6 +38,7 @@ use App\Models\WholesalerProduct;
 
 
 
+
 use App\Http\Controllers\AdminInventoryController;
 
 
@@ -96,6 +97,9 @@ Route::prefix('admin-inventory')->controller(AdminInventoryController::class)->n
     Route::delete('/{id}', 'destroy')->name('destroy'); // admin.inventory.destroy
 });
 Route::get('/admin-inventory/export', [AdminInventoryController::class, 'export'])->name('admin.inventory.export');
+
+use App\Http\Controllers\VendorApplicationController;
+use App\Livewire\Chat;
 
 
 Route::get('/', function () {
@@ -236,5 +240,15 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
     Route::patch('/', [ProfileController::class, 'update'])->name('update');
     Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
 });
+
+// ✅ VENDOR APPLICATION ROUTES
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendor-application', [VendorApplicationController::class, 'showForm'])->name('vendor.application');
+    Route::post('/vendor-application', [VendorApplicationController::class, 'submit']);
+});
+
+// ✅ LIVEWIRE CHAT
+Route::middleware(['auth'])->get('/chat', Chat::class)->name('chat');
+
 
 require __DIR__.'/auth.php';
