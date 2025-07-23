@@ -35,9 +35,9 @@ use App\Models\WholesalerProduct;
 
 
 
-<?php
 
-use Illuminate\Support\Facades\Route;
+
+
 use App\Http\Controllers\AdminInventoryController;
 
 
