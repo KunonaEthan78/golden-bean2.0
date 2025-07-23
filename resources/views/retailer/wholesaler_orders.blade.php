@@ -29,11 +29,16 @@
                                 {{ $item->product->name }} ({{ $item->product->grade }}) 
                                 <span>Qty: {{ $item->quantity }} × UGX {{ number_format($item->price) }}</span>
                             </li>
+                            
                         @endforeach
                     </ul>
                 </div>
             </div>
+            
         @endforeach
     @endif
 </div>
+<a href="{{ route('retailer.dashboard') }}" class="btn btn-secondary mb-3">
+    ← Back to Dashboard
+</a>
 @endsection

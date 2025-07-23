@@ -23,6 +23,12 @@
                 📦 My Orders
             </a>
 
+            <li class="nav-item">
+    <a class="nav-link" href="{{ route('retailer.products.create') }}">
+        ➕ Add Product
+    </a>
+</li>
+
         </div>
     </div>
 </div>

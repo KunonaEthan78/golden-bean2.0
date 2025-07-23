@@ -23,5 +23,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Add Product</button>
     </form>
+    
 </div>
+
+<a href="{{ route('retailer.dashboard') }}" class="btn btn-secondary mb-3">
+    ← Back to Dashboard
+</a>
 @endsection

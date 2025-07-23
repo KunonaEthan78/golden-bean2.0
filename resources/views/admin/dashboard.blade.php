@@ -12,10 +12,14 @@
             📄 View Reports & Summary
         </a>
     </div>
-    <a href="{{ route('admin.export.orders') }}" class="btn btn-success">
-        📥 Download Orders CSV
-    </a>
+    
 </div>
+<a href="{{ route('admin.export.product.sales') }}" class="btn btn-outline-secondary mt-3">
+    📥 Export Product Sales CSV
+</a>
+<a href="{{ route('admin.export.orders.ml') }}" class="btn btn-outline-primary">
+    🧠 Export Orders for ML
+</a>
 
 <div class="row g-3 mb-4">
     <div class="col-md-4">
@@ -30,7 +34,8 @@
         <div class="card text-bg-success shadow">
             <div class="card-body">
                 <h5 class="card-title">💰 Total Revenue</h5>
-                <p class="display-6 fw-bold">${{ number_format($totalRevenue, 2) }}</p>
+                <p class="display-6 fw-bold">UGX{{ number_format($totalRevenue, 2) }}</p>
+                
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@
         <div class="card text-bg-primary shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Total Revenue</h5>
-                <p class="display-6 fw-semibold">${{ number_format($totalRevenue, 2) }}</p>
+                <p class="display-6 fw-semibold">UGX{{ number_format($totalRevenue, 2) }}</p>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="card text-bg-warning shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Avg. Order Value</h5>
-                <p class="display-6 fw-semibold">${{ number_format($avgOrderValue, 2) }}</p>
+                <p class="display-6 fw-semibold">UGX{{ number_format($avgOrderValue, 2) }}</p>
             </div>
         </div>
     </div>
