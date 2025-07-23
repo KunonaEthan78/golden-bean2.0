@@ -7,13 +7,11 @@ use Illuminate\Http\Request;
 use App\Exports\InventoryItemsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-
-
 class AdminInventoryController extends Controller
 {
-    public function index(Request $request)
+    // Display list of inventory items with search & sorting
+   public function index(Request $request)
 {
-    // Your existing query for items with search & sorting
     $query = InventoryItem::query();
 
     if ($request->filled('search')) {
@@ -31,27 +29,27 @@ class AdminInventoryController extends Controller
 
     $items = $query->paginate(10);
 
-    // Dashboard summary calculations
     $totalProducts = InventoryItem::count();
-
-    // Calculate total stock value (sum of price * quantity)
     $totalStockValue = InventoryItem::sum(\DB::raw('price * quantity'));
-
-    // Count items with low stock (quantity less than 10)
     $lowStockCount = InventoryItem::where('quantity', '<', 10)->count();
 
-    return view('admin.inventory.index', compact(
-        'items', 'totalProducts',  'totalStockValue', 'lowStockCount'
-    ));
+    return view('admin.inventory.index', [
+    'items' => $items,
+    'totalProducts' => $totalProducts,
+    'totalStockValue' => $totalStockValue,
+    'lowStockCount' => $lowStockCount,
+]);
+
 }
 
 
-
+    // Show form to create a new inventory item
     public function create()
     {
         return view('admin.inventory.create');
     }
 
+    // Store new inventory item in database
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -67,12 +65,14 @@ class AdminInventoryController extends Controller
         return redirect()->route('admin.inventory.index')->with('success', 'Inventory item created.');
     }
 
+    // Show form to edit existing inventory item
     public function edit($id)
     {
         $item = InventoryItem::findOrFail($id);
         return view('admin.inventory.edit', compact('item'));
     }
 
+    // Update inventory item in database
     public function update(Request $request, $id)
     {
         $item = InventoryItem::findOrFail($id);
@@ -90,6 +90,7 @@ class AdminInventoryController extends Controller
         return redirect()->route('admin.inventory.index')->with('success', 'Inventory item updated.');
     }
 
+    // Delete inventory item
     public function destroy($id)
     {
         $item = InventoryItem::findOrFail($id);
@@ -97,8 +98,10 @@ class AdminInventoryController extends Controller
 
         return redirect()->route('admin.inventory.index')->with('success', 'Inventory item deleted.');
     }
+
+    // Export inventory items to Excel
     public function export()
-{
-    return Excel::download(new InventoryItemsExport, 'inventory.xlsx');
-}
+    {
+        return Excel::download(new InventoryItemsExport, 'inventory.xlsx');
+    }
 }
