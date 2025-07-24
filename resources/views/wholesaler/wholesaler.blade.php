@@ -34,8 +34,14 @@
             </tbody>
         </table>
     @endif
+
+    <div class="text-center mt-4">
+        <a href="{{ route('chat') }}" class="btn btn-outline-info me-2">
+            <i class="fas fa-comments"></i> Chat & Messages
+        </a>
+        <a href="{{ route('admin.inventory.index') }}" class="btn btn-primary">
+            Go to Inventory
+        </a>
+    </div>
 </div>
-<a href="{{ route('admin.inventory.index') }}" class="btn btn-primary">
-    Go to Inventory
-</a>
 @endsection

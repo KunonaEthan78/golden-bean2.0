@@ -15,6 +15,9 @@
         <a href="{{ route('customer.orders.index') }}" class="btn btn-outline-dark btn-lg">
             <i class="fas fa-box"></i> Order History
         </a>
+        <a href="{{ route('chat') }}" class="btn btn-outline-info btn-lg">
+            <i class="fas fa-comments"></i> Chat & Support
+        </a>
     </div>
 </div>
 @endsection

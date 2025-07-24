@@ -26,4 +26,18 @@
         </div>
     </div>
 </div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card border-info shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title text-info">💬 Communication</h5>
+                <p class="card-text">Chat with retailers, wholesalers, and administrators</p>
+                <a href="{{ route('chat') }}" class="btn btn-outline-info">
+                    <i class="fas fa-comments"></i> Open Chat
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

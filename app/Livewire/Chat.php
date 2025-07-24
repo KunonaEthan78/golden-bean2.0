@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\On;
 use App\Models\User;
 use App\Models\Message;
 use App\Events\MessageSent;
@@ -15,6 +16,9 @@ class Chat extends Component
 
     public $users, $selectedUser, $messages = [];
     public $newMessage, $file;
+
+    // Remove the problematic listener for now - we'll implement a simpler version
+    // protected $listeners = ['echo:chat.{Auth::id()},MessageSent' => 'receiveMessage'];
 
     public function mount()
     {
@@ -57,19 +61,21 @@ class Chat extends Component
         $this->newMessage = '';
         $this->file = null;
 
-        broadcast(new MessageSent($message))->toOthers();
+        // Remove broadcasting for now to simplify
+        // broadcast(new MessageSent($message))->toOthers();
 
         $this->loadMessages();
     }
 
-    #[On('echo:chat.{Auth::id()},MessageSent')]
-    public function receiveMessage($payload)
+    // Simple refresh method instead of real-time updates
+    public function refreshMessages()
     {
         $this->loadMessages();
     }
 
     public function render()
     {
-        return view('livewire.chat');
+        return view('livewire.chat-fixed')
+            ->layout('livewire.chat-layout');
     }
 }

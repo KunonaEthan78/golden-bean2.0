@@ -23,6 +23,10 @@
                 📦 My Orders
             </a>
 
+            <a href="{{ route('chat') }}" class="btn btn-outline-info btn-lg w-100">
+                💬 Chat & Messages
+            </a>
+
             <li class="nav-item">
     <a class="nav-link" href="{{ route('retailer.products.create') }}">
         ➕ Add Product

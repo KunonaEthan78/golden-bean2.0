@@ -183,6 +183,12 @@
                                 Reports
                             </a>
                         </div>
+                        <div class="col-6">
+                            <a href="{{ route('chat') }}" class="btn btn-outline-dark w-100">
+                                <i class="fas fa-comments me-2"></i>
+                                Chat & Messages
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

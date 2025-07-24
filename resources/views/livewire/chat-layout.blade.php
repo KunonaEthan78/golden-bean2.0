@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer | Golden Bean Portal</title>
+    <title>Chat - Golden Bean</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    @livewireStyles
 </head>
 <body class="bg-light">
-
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #5a7247, #8b5a2b);">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('customer.dashboard') }}">Golden Bean - Customer</a>
-            <div>
-                <a href="{{ route('customer.cart') }}" class="btn btn-sm btn-outline-light me-2">
-                    <i class="fas fa-shopping-cart"></i> Cart
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-comments"></i> Golden Bean Chat
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    Welcome, {{ Auth::user()->name }}
+                </span>
+                <a href="{{ route('dashboard') }}" class="btn btn-outline-light btn-sm me-2">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
                 </a>
-                <a href="{{ route('logout') }}" class="btn btn-sm btn-outline-light"
+                <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </a>
@@ -28,22 +33,12 @@
         </div>
     </nav>
 
-    {{-- Page Content --}}
-    <main class="container mt-4">
-        @yield('content')
-    </main>
-
-    {{-- Floating Chat Button --}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
-        <a href="{{ route('chat') }}" class="btn btn-secondary rounded-circle shadow-lg" 
-           style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;"
-           title="Chat & Support">
-            <i class="fas fa-comments fa-lg text-white"></i>
-        </a>
+    {{-- Chat Container --}}
+    <div class="container-fluid p-0" style="height: calc(100vh - 80px);">
+        @livewire('chat')
     </div>
 
-    {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    @yield('scripts')
+    @livewireScripts
 </body>
 </html>
