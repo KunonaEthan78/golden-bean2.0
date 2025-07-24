@@ -4,6 +4,7 @@ namespace App\Exports;
 use App\Models\InventoryItem;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Exports\InventoryItemsExport;
 
 class InventoryItemsExport implements FromCollection, WithHeadings
 {

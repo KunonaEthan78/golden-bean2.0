@@ -35,4 +35,7 @@
         </table>
     @endif
 </div>
+<a href="{{ route('admin.inventory.index') }}" class="btn btn-primary">
+    Go to Inventory
+</a>
 @endsection

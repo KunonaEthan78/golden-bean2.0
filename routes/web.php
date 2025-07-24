@@ -33,8 +33,74 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 
 use App\Models\WholesalerProduct;
 
+
+
+
+
+
+
+use App\Http\Controllers\AdminInventoryController;
+
+
+Route::prefix('admin-inventory')->group(function () {
+    Route::get('/', [AdminInventoryController::class, 'index'])->name('admin.inventory.index');
+    Route::get('/create', [AdminInventoryController::class, 'create'])->name('admin.inventory.create');
+    Route::post('/', [AdminInventoryController::class, 'store'])->name('admin.inventory.store');
+    Route::get('/{id}/edit', [AdminInventoryController::class, 'edit'])->name('admin.inventory.edit');
+    Route::put('/{id}', [AdminInventoryController::class, 'update'])->name('admin.inventory.update');
+    Route::delete('/{id}', [AdminInventoryController::class, 'destroy'])->name('admin.inventory.destroy');
+});
+
+
+Route::get('/admin-inventory', function () {
+    $harvestBatches = HarvestBatch::all(); // fetch all harvest batches from DB
+    return view('admin.inventory', compact('harvestBatches'));
+})->name('admin.inventory');
+
+Route::get('/admin-inventory', [AdminInventoryController::class, 'index'])->name('admin.inventory');
+
+
+
+
+
+
+// Cooperative dashboard route
+
+
+// Optional: General dashboard (if you still want it)
+Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+
+// Profile routes accessible without login (consider securing later)
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/profile/security', [ProfileController::class, 'security'])->name('profile.security');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+// Harvest Batch resource routes open to all
+Route::resource('harvest-batches', HarvestBatchController::class);
+
+// Farm profiles accessible by anyone
+Route::get('/farms/{farm}', [FarmController::class, 'show'])->name('farms.show');
+
+// Coffee grade view accessible by anyone
+Route::get('/grades/{grade}', [CoffeeGradeController::class, 'show'])->name('grades.show');
+
+
+Route::prefix('admin-inventory')->controller(AdminInventoryController::class)->name('admin.inventory.')->group(function () {
+    Route::get('/', 'index')->name('index'); // admin.inventory.index
+    Route::get('/create', 'create')->name('create'); // admin.inventory.create
+    Route::post('/', 'store')->name('store'); // admin.inventory.store
+    Route::get('/{id}/edit', 'edit')->name('edit'); // admin.inventory.edit
+    Route::put('/{id}', 'update')->name('update'); // admin.inventory.update
+    Route::delete('/{id}', 'destroy')->name('destroy'); // admin.inventory.destroy
+});
+Route::get('/admin-inventory/export', [AdminInventoryController::class, 'export'])->name('admin.inventory.export');
+
 use App\Http\Controllers\VendorApplicationController;
 use App\Livewire\Chat;
+
 
 Route::get('/', function () {
     return view('welcome');
