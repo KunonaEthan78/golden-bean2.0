@@ -17,9 +17,6 @@ class Chat extends Component
     public $users, $selectedUser, $messages = [];
     public $newMessage, $file;
 
-    // Remove the problematic listener for now - we'll implement a simpler version
-    // protected $listeners = ['echo:chat.{Auth::id()},MessageSent' => 'receiveMessage'];
-
     public function mount()
     {
         $this->users = User::where('id', '!=', Auth::id())->get();
@@ -61,13 +58,19 @@ class Chat extends Component
         $this->newMessage = '';
         $this->file = null;
 
-        // Remove broadcasting for now to simplify
-        // broadcast(new MessageSent($message))->toOthers();
-
         $this->loadMessages();
     }
 
-    // Simple refresh method instead of real-time updates
+    // Add this method:
+    public function messages()
+    {
+        return [
+            'newMessage.string' => 'The message must be a valid string.',
+            'file.file' => 'The uploaded file must be valid.',
+            'file.max' => 'The file size may not be greater than 5MB.',
+        ];
+    }
+
     public function refreshMessages()
     {
         $this->loadMessages();

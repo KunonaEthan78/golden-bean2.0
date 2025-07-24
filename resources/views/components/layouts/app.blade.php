@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Golden Bean Coffee') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
+    {{-- Fonts --}}
+    <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    {{-- Bootstrap CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Vite Assets -->
+    {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Alpine.js -->
+    {{-- Alpine.js --}}
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    <!-- Custom Styles -->
+    {{-- Custom Styles --}}
     <style>
         body {
             background-color: #f5f3ef;
@@ -64,14 +64,15 @@
 </head>
 <body class="font-sans antialiased">
 
-    <!-- Navigation Bar -->
+    {{-- Navigation Bar --}}
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="me-2" style="height: 40px;" />
-                <span class="fw-bold text-white">{{ config('app.name', 'Golden Bean Coffee') }}</span>
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="me-2" style="height: 40px;">
+                <span class="fw-bold text-white">Golden Bean Coffee</span>
             </a>
 
+            {{-- Add optional dropdown or logout here --}}
             @auth
                 <div class="dropdown ms-auto">
                     <button class="btn btn-sm text-white dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -91,27 +92,21 @@
         </div>
     </nav>
 
-    <!-- Optional page header -->
+    {{-- Page Header --}}
     @isset($header)
         <header class="bg-white shadow-sm">
-            <div class="container py-4">
+            <div class="max-w-7xl mx-auto py-4 px-4">
                 {{ $header }}
             </div>
         </header>
     @endisset
 
-    <!-- Main content -->
+    {{-- Page Content --}}
     <main class="container py-4">
         @yield('content')
     </main>
 
-    <!-- Bootstrap JS Bundle -->
+    {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    yield('content')
-
-@yield('scripts')
-
 </body>
 </html>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-@
