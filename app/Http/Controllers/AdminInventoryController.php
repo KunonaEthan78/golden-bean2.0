@@ -6,42 +6,65 @@ use App\Models\InventoryItem;
 use Illuminate\Http\Request;
 use App\Exports\InventoryItemsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AdminInventoryController extends Controller
 {
-    // Display list of inventory items with search & sorting
-   public function index(Request $request)
-{
-    $query = InventoryItem::query();
+    // Display list of inventory items with search, sorting, and dashboard metrics
+    public function index(Request $request)
+    {
+        $query = InventoryItem::query();
 
-    if ($request->filled('search')) {
-        $search = $request->input('search');
-        $query->where('product_name', 'like', "%{$search}%")
-              ->orWhere('sku', 'like', "%{$search}%");
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('product_name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('sort_by')) {
+            $order = $request->input('order', 'asc');
+            $query->orderBy($request->input('sort_by'), $order);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $items = $query->paginate(10);
+
+        $totalProducts = InventoryItem::count();
+        $totalStockValue = InventoryItem::sum(DB::raw('price * quantity'));
+        $lowStockCount = InventoryItem::where('quantity', '<', 10)->count();
+
+        // Stock Levels Over Time with average price per day
+        $stockData = InventoryItem::selectRaw("DATE(created_at) as date, SUM(quantity) as total, AVG(price) as avg_price")
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $dates = $stockData->pluck('date')->map(fn($date) => Carbon::parse($date)->format('M d'))->toArray();
+        $quantities = $stockData->pluck('total')->toArray();
+        $prices = $stockData->pluck('avg_price')->toArray();
+
+        // Fake Sales Data for Demo Purposes
+        $salesData = collect($quantities)->map(fn($q) => rand(10, $q > 10 ? $q : 20))->toArray();
+
+        // Category Breakdown (replace with actual data if available)
+        $categories = ['Arabica', 'Robusta', 'Espresso'];
+        $categoryQuantities = [12, 5, 3]; // Dummy data
+
+        return view('admin.inventory.index', compact(
+            'items',
+            'totalProducts',
+            'totalStockValue',
+            'lowStockCount',
+            'dates',
+            'quantities',
+            'prices',
+            'salesData',
+            'categories',
+            'categoryQuantities'
+        ));
     }
-
-    if ($request->filled('sort_by')) {
-        $order = $request->input('order', 'asc');
-        $query->orderBy($request->input('sort_by'), $order);
-    } else {
-        $query->orderBy('created_at', 'desc');
-    }
-
-    $items = $query->paginate(10);
-
-    $totalProducts = InventoryItem::count();
-    $totalStockValue = InventoryItem::sum(\DB::raw('price * quantity'));
-    $lowStockCount = InventoryItem::where('quantity', '<', 10)->count();
-
-    return view('admin.inventory.index', [
-    'items' => $items,
-    'totalProducts' => $totalProducts,
-    'totalStockValue' => $totalStockValue,
-    'lowStockCount' => $lowStockCount,
-]);
-
-}
-
 
     // Show form to create a new inventory item
     public function create()
@@ -69,7 +92,10 @@ class AdminInventoryController extends Controller
     public function edit($id)
     {
         $item = InventoryItem::findOrFail($id);
-        return view('admin.inventory.edit', compact('item'));
+        return view('admin.inventory.index', compact(
+    'items', 'totalProducts', 'totalStockValue', 'lowStockCount', 'dates', 'quantities', 'prices'
+));
+
     }
 
     // Update inventory item in database

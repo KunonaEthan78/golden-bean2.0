@@ -6,11 +6,14 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\ExportSalesData' => $baseDir . '/app/Console/Commands/ExportSalesData.php',
+    'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\MessageSent' => $baseDir . '/app/Events/MessageSent.php',
     'App\\Exports\\InventoryItemsExport' => $baseDir . '/app/Exports/InventoryItemsExport.php',
     'App\\Http\\Controllers\\AdminDashboardController' => $baseDir . '/app/Http/Controllers/AdminDashboardController.php',
     'App\\Http\\Controllers\\AdminInventoryController' => $baseDir . '/app/Http/Controllers/AdminInventoryController.php',
     'App\\Http\\Controllers\\AdminOrderController' => $baseDir . '/app/Http/Controllers/AdminOrderController.php',
+    'App\\Http\\Controllers\\Admin\\AnalyticsController' => $baseDir . '/app/Http/Controllers/Admin/AnalyticsController.php',
     'App\\Http\\Controllers\\Admin\\ExportController' => $baseDir . '/app/Http/Controllers/Admin/ExportController.php',
     'App\\Http\\Controllers\\Admin\\ReportsController' => $baseDir . '/app/Http/Controllers/Admin/ReportsController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
@@ -180,6 +183,8 @@ return array(
     'Cron\\MinutesField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
     'Cron\\MonthField' => $vendorDir . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
     'Database\\Factories\\UserFactory' => $baseDir . '/database/factories/UserFactory.php',
+    'Database\\Seeders\\CoffeeInventorySeeder' => $baseDir . '/database/seeders/CoffeeInventorySeeder.php',
+    'Database\\Seeders\\CompleteDataSeeder' => $baseDir . '/database/seeders/CompleteDataSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
     'Database\\Seeders\\ProductSeeder' => $baseDir . '/database/seeders/ProductSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',

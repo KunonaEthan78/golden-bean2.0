@@ -630,11 +630,14 @@ class ComposerStaticInit216770b996257f13ebe9c423bad00893
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\ExportSalesData' => __DIR__ . '/../..' . '/app/Console/Commands/ExportSalesData.php',
+        'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Events\\MessageSent' => __DIR__ . '/../..' . '/app/Events/MessageSent.php',
         'App\\Exports\\InventoryItemsExport' => __DIR__ . '/../..' . '/app/Exports/InventoryItemsExport.php',
         'App\\Http\\Controllers\\AdminDashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminDashboardController.php',
         'App\\Http\\Controllers\\AdminInventoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminInventoryController.php',
         'App\\Http\\Controllers\\AdminOrderController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminOrderController.php',
+        'App\\Http\\Controllers\\Admin\\AnalyticsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AnalyticsController.php',
         'App\\Http\\Controllers\\Admin\\ExportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ExportController.php',
         'App\\Http\\Controllers\\Admin\\ReportsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ReportsController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
@@ -804,6 +807,8 @@ class ComposerStaticInit216770b996257f13ebe9c423bad00893
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
+        'Database\\Seeders\\CoffeeInventorySeeder' => __DIR__ . '/../..' . '/database/seeders/CoffeeInventorySeeder.php',
+        'Database\\Seeders\\CompleteDataSeeder' => __DIR__ . '/../..' . '/database/seeders/CompleteDataSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\ProductSeeder' => __DIR__ . '/../..' . '/database/seeders/ProductSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',

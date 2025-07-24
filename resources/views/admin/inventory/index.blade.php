@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">☕ Coffee Inventory</h2>
@@ -24,7 +26,7 @@
                 <option value="quantity" {{ request('sort_by') == 'quantity' ? 'selected' : '' }}>Quantity</option>
                 <option value="price" {{ request('sort_by') == 'price' ? 'selected' : '' }}>Price</option>
                 <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>Date</option>
-                <option value="id">ID</option>
+                <option value="id" {{ request('sort_by') == 'id' ? 'selected' : '' }}>ID</option>
             </select>
         </div>
         <div class="col-md-2">
@@ -112,6 +114,19 @@
     @endif
 </div>
 
+<hr class="my-5">
+
+<h4 class="fw-bold mb-3">📊 Inventory Insights</h4>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <canvas id="stockLevelsChart" height="200"></canvas>
+    </div>
+    <div class="col-md-6">
+        <canvas id="salesVsStockChart" height="200"></canvas>
+    </div>
+</div>
+
 {{-- Inline Styles --}}
 <style>
     .summary-card {
@@ -140,4 +155,53 @@
         color: white;
     }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+const dates = {!! json_encode($dates) !!};
+const quantities = {!! json_encode($quantities) !!};
+const prices = {!! json_encode($prices) !!};
+
+const stockValues = quantities.map((qty, i) => qty * prices[i]);
+
+const stockCtx = document.getElementById('stockLevelsChart').getContext('2d');
+new Chart(stockCtx, {
+    type: 'line',
+    data: {
+        labels: dates,
+        datasets: [{
+            label: 'Stock Levels',
+            data: quantities,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        scales: { y: { beginAtZero: true } },
+        responsive: true
+    }
+});
+
+const salesCtx = document.getElementById('salesVsStockChart').getContext('2d');
+new Chart(salesCtx, {
+    type: 'bar',
+    data: {
+        labels: dates,
+        datasets: [{
+            label: 'Stock Value (UGX)',
+            data: stockValues,
+            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+            borderColor: 'rgba(255, 159, 64, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+    }
+});
+</script>
 @endsection
