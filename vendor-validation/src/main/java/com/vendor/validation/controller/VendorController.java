@@ -1,6 +1,8 @@
 package com.vendor.validation.controller;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.http.ResponseEntity;
@@ -31,17 +33,41 @@ public class VendorController {
             // Print text for debugging
             System.out.println("PDF Content:\n" + text);
 
-            // Simple validation rules (you can customize this)
-            boolean passesValidation = text.contains("Financial Score:") &&
-                                       text.contains("Compliance ID:") &&
-                                       text.contains("Reputation:");
-
-            if (passesValidation) {
-                // Simulate scheduling a facility visit
-                return ResponseEntity.ok("✅ Vendor passed validation. Facility visit scheduled.");
-            } else {
-                return ResponseEntity.badRequest().body("❌ Vendor validation failed. Incomplete data.");
+            // Validate Financial Score (must be >= 52 out of 100)
+            String financialScorePattern = "Financial Score:\\s*(\\d+)";
+            Pattern scorePattern = Pattern.compile(financialScorePattern, Pattern.CASE_INSENSITIVE);
+            Matcher scoreMatcher = scorePattern.matcher(text);
+            
+            if (!scoreMatcher.find()) {
+                return ResponseEntity.badRequest().body("❌ Financial Score not found in PDF.");
             }
+            
+            int financialScore = Integer.parseInt(scoreMatcher.group(1));
+            if (financialScore < 52) {
+                return ResponseEntity.badRequest().body("❌ Financial Score too low: " + financialScore + "/100. Minimum required: 52/100.");
+            }
+
+            // Validate Reputation (must be "average" or "respectable", not "poor")
+            String reputationPattern = "Reputation:\\s*(average|poor|respectable)";
+            Pattern repPattern = Pattern.compile(reputationPattern, Pattern.CASE_INSENSITIVE);
+            Matcher repMatcher = repPattern.matcher(text);
+            
+            if (!repMatcher.find()) {
+                return ResponseEntity.badRequest().body("❌ Reputation status not found or invalid. Must be: average, poor, or respectable.");
+            }
+            
+            String reputation = repMatcher.group(1).toLowerCase();
+            if ("poor".equals(reputation)) {
+                return ResponseEntity.badRequest().body("❌ Poor reputation detected. Validation failed.");
+            }
+
+            // Validate Compliance ID exists
+            if (!text.toLowerCase().contains("compliance id:")) {
+                return ResponseEntity.badRequest().body("❌ Compliance ID not found in PDF.");
+            }
+
+            // All validations passed
+            return ResponseEntity.ok("✅ Vendor passed validation. Financial Score: " + financialScore + "/100, Reputation: " + reputation + ". Facility visit scheduled.");
 
         } catch (IOException e) {
             e.printStackTrace();
