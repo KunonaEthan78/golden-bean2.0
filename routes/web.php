@@ -3,14 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// ✅ Admin + General Controllers
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
-
 use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\AdminInventoryController;
+use App\Http\Controllers\VendorApplicationController;
+use App\Livewire\Chat;
 
 // ✅ Retailer Controllers (CORRECT NAMESPACE)
 use App\Http\Controllers\Retailer\RetailerProductController;
@@ -34,14 +36,6 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Models\WholesalerProduct;
 
 
-
-
-
-
-
-use App\Http\Controllers\AdminInventoryController;
-
-
 Route::prefix('admin-inventory')->group(function () {
     Route::get('/', [AdminInventoryController::class, 'index'])->name('admin.inventory.index');
     Route::get('/create', [AdminInventoryController::class, 'create'])->name('admin.inventory.create');
@@ -52,59 +46,13 @@ Route::prefix('admin-inventory')->group(function () {
 });
 
 
-Route::get('/admin-inventory', function () {
-    $harvestBatches = HarvestBatch::all(); // fetch all harvest batches from DB
-    return view('admin.inventory', compact('harvestBatches'));
-})->name('admin.inventory');
-
-Route::get('/admin-inventory', [AdminInventoryController::class, 'index'])->name('admin.inventory');
-
-
-
-
-
-
-// Cooperative dashboard route
-
-
-// Optional: General dashboard (if you still want it)
-Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
-
-// Profile routes accessible without login (consider securing later)
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-Route::get('/profile/security', [ProfileController::class, 'security'])->name('profile.security');
-Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
-Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-// Harvest Batch resource routes open to all
-Route::resource('harvest-batches', HarvestBatchController::class);
-
-// Farm profiles accessible by anyone
-Route::get('/farms/{farm}', [FarmController::class, 'show'])->name('farms.show');
-
-// Coffee grade view accessible by anyone
-Route::get('/grades/{grade}', [CoffeeGradeController::class, 'show'])->name('grades.show');
-
-
-Route::prefix('admin-inventory')->controller(AdminInventoryController::class)->name('admin.inventory.')->group(function () {
-    Route::get('/', 'index')->name('index'); // admin.inventory.index
-    Route::get('/create', 'create')->name('create'); // admin.inventory.create
-    Route::post('/', 'store')->name('store'); // admin.inventory.store
-    Route::get('/{id}/edit', 'edit')->name('edit'); // admin.inventory.edit
-    Route::put('/{id}', 'update')->name('update'); // admin.inventory.update
-    Route::delete('/{id}', 'destroy')->name('destroy'); // admin.inventory.destroy
-});
-Route::get('/admin-inventory/export', [AdminInventoryController::class, 'export'])->name('admin.inventory.export');
-
-use App\Http\Controllers\VendorApplicationController;
-use App\Livewire\Chat;
-
-
+// Welcome page
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/admin-inventory/export', [AdminInventoryController::class, 'export'])->name('admin.inventory.export');
 
 
 // ✅ RETAILER ROUTES
@@ -219,22 +167,36 @@ Route::middleware(['auth'])->prefix('customer')->name('customer.')->group(functi
 });
 
 
-// ✅ ROLE-BASED REDIRECT AFTER LOGIN
+// ✅ ROLE-BASED REDIRECT AFTER LOGIN (Used by AppServiceProvider)
 Route::get('/redirect-after-login', function () {
-    $user = Auth::user();
-
-    if ($user->is_admin) return redirect()->route('admin.dashboard');
-    if ($user->role === 'retailer') return redirect()->route('retailer.dashboard');
-    if ($user->role === 'cooperative') return redirect()->route('cooperative.dashboard');
-    if ($user->role === 'wholesaler') return redirect()->route('wholesaler.dashboard');
-    if ($user->role === 'customer') return redirect()->route('customer.dashboard');
-
     return redirect()->route('dashboard');
-})->middleware('auth');
+})->middleware('auth')->name('redirect-after-login');
 
 
-// ✅ GENERAL DASHBOARD & PROFILE
-Route::get('/dashboard', fn() => view('dashboard'))->middleware(['auth', 'verified'])->name('dashboard');
+// ✅ GENERAL DASHBOARD & PROFILE  
+Route::middleware(['auth', 'verified'])->get('/dashboard', function() {
+    $user = Auth::user();
+    
+    // Redirect based on user role instead of creating a loop
+    if ($user->is_admin) {
+        return redirect()->route('admin.dashboard');
+    }
+    if ($user->role === 'retailer') {
+        return redirect()->route('retailer.dashboard');
+    }
+    if ($user->role === 'cooperative') {
+        return redirect()->route('cooperative.dashboard');
+    }
+    if ($user->role === 'wholesaler') {
+        return redirect()->route('wholesaler.dashboard');
+    }
+    if ($user->role === 'customer') {
+        return redirect()->route('customer.dashboard');
+    }
+    
+    // If no specific role, show a generic dashboard
+    return view('dashboard');
+})->name('dashboard');
 
 Route::middleware('auth')->prefix('profile')->name('profile.')->group(function () {
     Route::get('/', [ProfileController::class, 'edit'])->name('edit');
