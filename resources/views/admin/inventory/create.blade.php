@@ -10,34 +10,16 @@
         <div class="row mb-3">
             <label for="product_name" class="col-sm-2 col-form-label fw-semibold">Product Name</label>
             <div class="col-sm-10">
-                <select name="product_name" class="form-select" required>
-                    <option value="">-- Select Product --</option>
-                    <option value="Coffee Beans">Coffee Beans</option>
-                    <option value="Espresso Machine">Espresso Machine</option>
-                    <option value="Coffee Grinder">Coffee Grinder</option>
-                    <option value="Cold Brew Bottles">Cold Brew Bottles</option>
-                    <option value="Coffee Filters (Pack of 100)">Coffee Filters (Pack of 100)</option>
-                    <option value="French Press">French Press</option>
-                    <option value="Latte Cups (Set of 4)">Latte Cups (Set of 4)</option>
-                    <option value="Organic Arabica Beans">Organic Arabica Beans</option>
-                </select>
+                <input type="text" name="product_name" class="form-control" placeholder="Enter product name (e.g., Mubende Bourbon Arabica, Bugisu Blue Mountain, etc.)" required>
+                <small class="form-text text-muted">Enter the full name of the coffee variety or product</small>
             </div>
         </div>
 
         <div class="row mb-3">
             <label for="sku" class="col-sm-2 col-form-label fw-semibold">SKU</label>
             <div class="col-sm-10">
-                <select name="sku" class="form-select" required>
-                    <option value="">-- Select SKU --</option>
-                    <option value="COF123">COF123</option>
-                    <option value="ESP456">ESP456</option>
-                    <option value="GRD789">GRD789</option>
-                    <option value="CLD001">CLD001</option>
-                    <option value="FLT100">FLT100</option>
-                    <option value="FRP456">FRP456</option>
-                    <option value="CUP004">CUP004</option>
-                    <option value="ARB789">ARB789</option>
-                </select>
+                <input type="text" name="sku" class="form-control" placeholder="Enter unique SKU (e.g., MUB-001, BUG-002, KAS-003)" required>
+                <small class="form-text text-muted">Use a unique identifier like region-number format</small>
             </div>
         </div>
 

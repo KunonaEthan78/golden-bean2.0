@@ -40,6 +40,16 @@
         @yield('content')
     </div>
 
+    {{-- Floating Chat Button --}}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+        <a href="{{ route('chat') }}" class="btn btn-info rounded-circle shadow-lg" 
+           style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;"
+           title="Open Chat">
+            <i class="fas fa-comments fa-lg text-white"></i>
+        </a>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
